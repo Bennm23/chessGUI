@@ -6,8 +6,7 @@ import java.util.Objects;
 
 public class ChessUtils {
     public static Image loadImage(String resource, int width, int height) {
-        System.out.println(resource);
         return new Image(Objects.requireNonNull(ChessUtils.class.getClassLoader().getResourceAsStream(resource)),
-                width,height,true,true);
+                width, height, true, true);
     }
 }

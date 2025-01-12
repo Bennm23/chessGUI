@@ -1,9 +1,7 @@
 package chess.chessgui;
 
-import chess.chessgui.players.Player;
 import com.google.protobuf.InvalidProtocolBufferException;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import pieces.*;
@@ -18,30 +16,24 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static pieces.Piece.colToFile;
 
-/**
- * Chess Board has 64 ChessTiles
- *
- * ChessTiles can have 0 or 1 Piece
- */
 public class ChessBoard extends GridPane {
     private final static Color BLACK_BG_COLOR = Color.rgb(119, 153, 67);
     private final static Color WHITE_BG_COLOR = Color.rgb(255, 255, 240);
 
+    public AtomicBoolean freePlayOn = new AtomicBoolean(false);
     List<ChessTile> tiles = new ArrayList<>();
     String boardFen = "";
     Board protoBoard;
-
     boolean black_long_castle = true;
     boolean black_castle = true;
     boolean white_long_castle = true;
     boolean white_castle = true;
-
-    public AtomicBoolean freePlayOn = new AtomicBoolean(false);
     String lastEnPassant = "";
 
     AtomicBoolean latestMoveCompleted = new AtomicBoolean(false);
     AtomicInteger playerExpected = new AtomicInteger(0);
-
+    ChessTile lastSrcTile;
+    ChessTile lastDestTile;
     public TcpComms tcpComms = new TcpComms(this::handleProtoMsg);
 
     public ChessBoard() {
@@ -50,21 +42,61 @@ public class ChessBoard extends GridPane {
         setup_game();
     }
 
+    public static String getFenVal(ProtoPiece piece) {
+        String pieceVal;
+
+        switch (piece.getType()) {
+            case PAWN -> pieceVal = "p";
+            case BISHOP -> pieceVal = "b";
+            case KNIGHT -> pieceVal = "n";
+            case ROOK -> pieceVal = "r";
+            case QUEEN -> pieceVal = "q";
+            case KING -> pieceVal = "k";
+            default -> pieceVal = "";
+        }
+
+        if (piece.getColor() == PieceColor.WHITE)
+            return pieceVal.toUpperCase();
+
+        return pieceVal;
+    }
+
+    private static boolean sleep(long ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException ignored) {
+            return false;
+        }
+        return true;
+    }
+
+    public static int getCol(int total) {
+        return total % 8;
+    }
+
+    public static int getRow(int total) {
+        return total / 8;
+    }
+
     public Piece findPiece(Position pos) {
         return findTile(pos).getPiece();
     }
+
     public Piece findPiece(int row, int col) {
         return findTile(row, col).getPiece();
     }
+
     public ChessTile findTile(int row, int col) {
         return tiles.get(row * 8 + col);
     }
+
     public ChessTile findTile(Position pos) {
         return findTile(pos.getRow(), pos.getCol());
     }
 
     public void reset() {
         tiles.clear();
+        tcpComms.resetConnection();
         super.getChildren().clear();
         latestMoveCompleted.set(true);
         black_long_castle = true;
@@ -79,14 +111,11 @@ public class ChessBoard extends GridPane {
     }
 
     public void setup_game() {
-
-//        Comms.resetClient();
-
         int count = 0;
         String pieceColor;
         Color backgroundColor;
         int row, col;
-        Piece piece = null;
+        Piece piece;
         for (int i = 0; i < 64; i++) {
             if (i % 8 == 0) count--;
             count++;
@@ -132,20 +161,11 @@ public class ChessBoard extends GridPane {
     }
 
     public void handlePieceHover(Piece piece, boolean hoverEnter) {
-//        GetValidMoves validMovesMsg = GetValidMoves.newBuilder()
-//                .setBoard(protoBoard)
-//                .setPieceToMove(piece.getProtoPiece())
-//                .build();
-//        tcpComms.send(Common.MessageID.GET_VALID_MOVES, validMovesMsg);
-//        piece.requestValidMoves(protoBoard);
         for (Position p : piece.getValidMoves()) {
             ChessTile t = findTile(p);
             t.setAccessibleHighlight(hoverEnter);
         }
     }
-
-    ChessTile lastSrcTile;
-    ChessTile lastDestTile;
 
     public void handleManualMove(int pieceRow, int pieceCol, ChessTile destinationTile) {
         Piece pieceToMove = findPiece(pieceRow, pieceCol);
@@ -174,6 +194,7 @@ public class ChessBoard extends GridPane {
             completeMove();
         }
     }
+
     private void handleProtoMsg(Common.MessageID messageID, byte[] bytes) throws InvalidProtocolBufferException {
         switch (messageID) {
             case FIND_BEST_RESPONSE -> {
@@ -185,20 +206,11 @@ public class ChessBoard extends GridPane {
                 ProtoPiece piece = response.getRequestPiece();
                 var realPiece = findPiece(piece.getRow(), piece.getCol());
                 realPiece.updateValids(response.getMovesList());
-//                System.out.println("Vald MOves List = " + response.getMovesList());
-//
-//                for (Position p : realPiece.getValidMoves()) {
-//                    ChessTile t = findTile(p);
-//                    t.setAccessibleHighlight(true);
-//                }
             }
         }
     }
 
-
     public void handleComputerMove(FindBestResponse bestMoveResponse) {
-//        var index = startRow * 8 + startCol;
-        System.out.println("GOT COMPUTER MOVE RESPONSE");
         if (bestMoveResponse.getPromotedPiece() != PieceType.NONE) {
             Piece p = findPiece(bestMoveResponse.getFromPos());
             p.promoteTo(bestMoveResponse.getPromotedPiece());
@@ -207,8 +219,6 @@ public class ChessBoard extends GridPane {
         ChessTile sourceTile = findTile(bestMoveResponse.getFromPos());
         Piece pieceToMove = sourceTile.getPiece();
         ChessTile destinationTile = findTile(bestMoveResponse.getEndPos());
-        System.out.println("BOT MOVING FROM\n " + bestMoveResponse.getFromPos());
-        System.out.println("BOT MOVING TO\n " + bestMoveResponse.getEndPos());
 
         checkIfCastleMove(pieceToMove, destinationTile);
         checkForEnPassant(pieceToMove, sourceTile, destinationTile);
@@ -262,7 +272,6 @@ public class ChessBoard extends GridPane {
         }
     }
 
-
     public void checkForEnPassant(Piece pieceToMove, ChessTile currTile, ChessTile destTile) {
         //Check EnPassant
         String enPassantTile = "";
@@ -279,11 +288,10 @@ public class ChessBoard extends GridPane {
         lastEnPassant = enPassantTile;
     }
 
-    public void updateProtoBoard(PieceColor playerToMove, int turnCount){
-//        if (protoBoard != null && turnCount.get() == protoBoard.getTurnCount()) return protoBoard;
+    public void updateProtoBoard(PieceColor playerToMove, int turnCount) {
         Board.Builder boardBuilder = Board.newBuilder();
         for (ChessTile tile : tiles) {
-           boardBuilder.addPieces(tile.getProtoPiece());
+            boardBuilder.addPieces(tile.getProtoPiece());
         }
         boardBuilder.setTurnCount(turnCount);
         boardBuilder.setPlayerToMove(playerToMove);
@@ -331,6 +339,7 @@ public class ChessBoard extends GridPane {
 
         for (ChessTile tile : tiles) {
             ProtoPiece p = tile.getProtoPiece();
+            tile.setAccessibleHighlight(false);
             if (p.getType() != PieceType.NONE) {
                 GetValidMoves validMovesMsg = GetValidMoves.newBuilder()
                         .setBoard(protoBoard)
@@ -341,9 +350,6 @@ public class ChessBoard extends GridPane {
             }
         }
 
-        Platform.runLater(() -> {
-            super.requestLayout();
-        });
     }
 
     public void updateFen(PieceColor playerToMove, int turnCount) {
@@ -401,24 +407,6 @@ public class ChessBoard extends GridPane {
         boardFen = fen.toString();
         System.out.println("FEN STRING = " + fen);
     }
-    public static String getFenVal(ProtoPiece piece) {
-        String pieceVal;
-
-        switch (piece.getType()) {
-            case PAWN -> pieceVal = "p";
-            case BISHOP -> pieceVal = "b";
-            case KNIGHT -> pieceVal = "n";
-            case ROOK -> pieceVal = "r";
-            case QUEEN -> pieceVal = "q";
-            case KING -> pieceVal = "k";
-            default -> pieceVal = "";
-        }
-
-        if (piece.getColor() == PieceColor.WHITE)
-            return pieceVal.toUpperCase();
-
-        return pieceVal;
-    }
 
     public String getBoardFen() {
         return boardFen;
@@ -428,41 +416,18 @@ public class ChessBoard extends GridPane {
         freePlayOn.set(on);
     }
 
-    private static boolean sleep(long ms) {
-        try {
-            Thread.sleep(ms);
-        } catch (InterruptedException ignored) {
-//            ex.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    public void awaitMoveCompletion(Player player) {
+    public void awaitMoveCompletion(PieceColor player) {
         latestMoveCompleted.set(false);
-        playerExpected.set(player.getColor().getNumber());
+        playerExpected.set(player.getNumber());
 
         while (!latestMoveCompleted.get()) {
             if (!sleep(10)) return; //Game interrupted
         }
         System.out.println("Move completed in await");
-        player.setWaitingForMove(false);
-//        updateProtoBoard(player == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE);
     }
-
-    SimpleBooleanProperty validMoveMade = new SimpleBooleanProperty(false);
 
     public void completeMove() {
         System.out.println("MOVE COMPLETED!");
         latestMoveCompleted.set(true);
-        validMoveMade.set(true);
-        validMoveMade.set(false);//clear immediately
-    }
-
-    public static int getCol(int total) {
-        return total % 8;
-    }
-    public static int getRow(int total) {
-        return total / 8;
     }
 }

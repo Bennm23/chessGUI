@@ -19,62 +19,21 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GuiController implements Initializable {
 
-    @FXML AnchorPane root;
-    @FXML VBox boardContainer;
-
-    @FXML ToggleButton freePlaceToggle;
-    @FXML Button gameControlButton;
-
-    @FXML ComboBox<PlayerType> whiteChoiceCB;
-    @FXML ComboBox<PlayerType> blackChoiceCB;
-
     static ChessBoard board = new ChessBoard();
+    @FXML
+    AnchorPane root;
+    @FXML
+    VBox boardContainer;
+    @FXML
+    ToggleButton freePlaceToggle;
+    @FXML
+    Button gameControlButton;
+    @FXML
+    ComboBox<PlayerType> whiteChoiceCB;
+    @FXML
+    ComboBox<PlayerType> blackChoiceCB;
     Game game;
 
-    AtomicBoolean gameWatcher = new AtomicBoolean(false);
-
-    public GuiController() {
-//        game = new Game(new ChessBot(Chess.PieceColor.WHITE), new RealPlayer(Chess.PieceColor.BLACK), board);
-//        game.startGame();
-//        start();
-    }
-
-    static void start() {
-        new Thread(() -> {
-            Game game = new Game(new ChessBot(Chess.PieceColor.WHITE), new RealPlayer(Chess.PieceColor.BLACK), board);
-            game.startGame();
-
-        }).start();
-    }
-
-    void startGameWatcher() {
-        new Thread(() -> {
-            boolean last = false;
-            while (!Thread.currentThread().isInterrupted()) {
-
-                while (last == gameWatcher.get()) {
-                    try {
-                        Thread.sleep(250);
-                    } catch (InterruptedException ignored) {}
-                }
-                last = gameWatcher.get();
-
-                if (game != null && game.gameStarted()) {
-                    game.resetGame();
-                    Platform.runLater(() -> gameControlButton.setText("Start Game"));
-                } else if (game == null || !game.gameStarted()) {
-                    game = new Game(
-                            whiteChoiceCB.getSelectionModel().getSelectedItem().getPlayer(Chess.PieceColor.WHITE),
-                            blackChoiceCB.getSelectionModel().getSelectedItem().getPlayer(Chess.PieceColor.BLACK),
-                            board
-                    );
-                    Platform.runLater(() -> gameControlButton.setText("Reset Game"));
-                    game.startGame();
-                }
-
-            }
-        }).start();
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -98,7 +57,6 @@ public class GuiController implements Initializable {
 
         gameControlButton.setOnAction(evt -> {
 
-//            gameWatcher.set(!gameWatcher.get());
             if (game != null && game.gameStarted()) {
                 game.resetGame();
                 gameControlButton.setText("Start Game");
@@ -109,12 +67,10 @@ public class GuiController implements Initializable {
                         board
                 );
                 gameControlButton.setText("Reset Game");
-               game.startGame();
+                game.startGame();
             }
         });
-
     }
-
 
 
     enum PlayerType {
@@ -122,6 +78,7 @@ public class GuiController implements Initializable {
         COMPUTER("Computer");
 
         final String displayStr;
+
         PlayerType(String display) {
             displayStr = display;
         }

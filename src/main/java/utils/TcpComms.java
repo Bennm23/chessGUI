@@ -64,7 +64,7 @@ public class TcpComms {
         }
     }
 
-    void resetConnection() {
+    public void resetConnection() {
         try {
             socket.close();
             inputStream.close();
