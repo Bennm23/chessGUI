@@ -1,15 +1,12 @@
 package chess.chessgui;
 
-import com.google.protobuf.GeneratedMessage;
 import com.google.protobuf.GeneratedMessageV3;
-import protocols.Common;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.Arrays;
 import protocols.Common.*;
 
@@ -32,7 +29,11 @@ public class Comms {
         }
     }
 
-    static void terminateClient() {
+    static void resetClient() {
+        if (socket == null || socket.isClosed()) {
+            setupClient();
+            return;
+        }
         try {
             socket.close();
             inputStream.close();
@@ -54,7 +55,7 @@ public class Comms {
 //            System.out.println("GOT RESULT = " + result + " FROM SERVER");
             return result != -1;
         } catch (SocketException ex) {
-            terminateClient();
+            resetClient();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,12 +70,20 @@ public class Comms {
         if (!send(id, message)) return;
         readResponse(handler);
     }
+    public synchronized static void send_async(MessageID id, GeneratedMessageV3 message, IProtoHandler handler) {
+//        System.out.println("SENDING " + id);
+        new Thread(() -> {
+            if (!send(id, message)) return;
+            readResponse(handler);
+        }).start();
+    }
 
     static void readResponse(IProtoHandler handler) {
        if (socket.isClosed() || inputStream == null) return;
        try {
            int msgSize = inputStream.readInt();
            if (msgSize == -1) return;
+           int msgId = inputStream.readInt();
 //           System.out.println("READ MSG SIZE = " + msgSize);
            byte[] bytes = new byte[msgSize];
            inputStream.readFully(bytes);

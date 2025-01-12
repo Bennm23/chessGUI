@@ -40,10 +40,13 @@ public abstract class Piece implements Serializable {
         updateProtoPiece();
 
         if (!cachedImages.containsKey(imageString)){
-            cachedImages.put(imageString, ChessUtils.loadImage(imageString, 50,50));
+            cachedImages.put(imageString, ChessUtils.loadImage(imageString, ChessTile.TILE_SIZE,ChessTile.TILE_SIZE));
         }
     }
 
+    public ProtoPiece getProtoPiece() {
+        return protoPiece;
+    }
     private void updateProtoPiece() {
         protoPiece = ProtoPiece.newBuilder()
                 .setColor(getColor())
@@ -53,35 +56,105 @@ public abstract class Piece implements Serializable {
                 .build();
     }
 
-    public void moveTo(ChessTile chessTile) {
-        System.out.println("MOVE TO CALLED");
+    public void promoteTo(PieceType type) {
+
+        Piece newPiece;
+        switch (type) {
+            case PAWN -> newPiece = new Pawn(color);
+            case KNIGHT -> newPiece = new Knight(color);
+            case BISHOP -> newPiece = new Bishop(color);
+            case ROOK -> newPiece = new Rook(color);
+            case QUEEN -> newPiece = new Queen(color);
+            case KING -> newPiece = new King(color);
+            default -> newPiece = null;
+        }
+        if (newPiece == null) return;
+
+        newPiece.setPosition(row, col);
+
         tile.clearPiece();
-        tile = chessTile;
-//        position.setCol(chessTile.getPosition().getCol())
-//                .setRow(chessTile.getPosition().getRow());
+        tile.setPiece(newPiece);
+        tile = null;
+    }
+
+    public void moveTo(ChessTile destTile) {
+        moveTo(destTile, true);
+    }
+    public void moveTo(ChessTile destTile, boolean primaryMove) {
+        System.out.println("MOVE TO CALLED");
+//        if (isPiece(PieceColor.BLACK, PieceType.KING)) {
+//            if (ChessBoard.black_castle && destTile.getCol() == 6) {
+//                //Short castle happening
+//                ChessTile rookTile = ChessBoard.getTile(0, 7);
+//                ChessTile rookDest = ChessBoard.getTile(0, 5);
+//                rookTile.getPiece().moveTo(rookDest, false);
+//            } else if (ChessBoard.black_long_castle && destTile.getCol() == 2) {
+//                //Long castle happening
+//                ChessTile rookTile = ChessBoard.getTile(0, 0);
+//                ChessTile rookDest = ChessBoard.getTile(0, 3);
+//                rookTile.getPiece().moveTo(rookDest, false);
+//            }
+//        } else if (isPiece(PieceColor.WHITE, PieceType.KING)) {
+//            if (ChessBoard.white_castle && destTile.getCol() == 6) {
+//                //Short castle happening
+//                ChessTile rookTile = ChessBoard.getTile(7, 7);
+//                ChessTile rookDest = ChessBoard.getTile(7, 5);
+//                rookTile.getPiece().moveTo(rookDest, false);
+//            } else if (ChessBoard.white_long_castle && destTile.getCol() == 2) {
+//                //Long castle happening
+//                ChessTile rookTile = ChessBoard.getTile(7, 0);
+//                ChessTile rookDest = ChessBoard.getTile(7, 3);
+//                rookTile.getPiece().moveTo(rookDest, false);
+//            }
+//        }
+
+
+        //Check EnPassant
+        String enPassantTile = "";
+        if (isPiece(PieceColor.BLACK, PieceType.PAWN)) {
+            if (tile.getRow() == 1 && destTile.getRow() == 3) {
+                enPassantTile = colToFile(tile.getCol()) + "6"; //Rust chess is indexed by 1 as bottom
+            }
+
+        } else if (isPiece(PieceColor.WHITE, PieceType.PAWN)) {
+            if (tile.getRow() == 6 && destTile.getRow() == 4) {
+                enPassantTile = colToFile(tile.getCol()) + "3"; //Rust chess is indexed by 0 as bottom
+            }
+        }
+        tile.clearPiece();
+        tile = destTile;
         row = tile.getRow();
         col = tile.getCol();
         updateProtoPiece();
         tile.setPiece(this);
 
-        ChessBoard.nextTurn();
+//        if (primaryMove) ChessBoard.completeMove(enPassantTile);
     }
 
-    public void requestValidMoves() {
-//        System.out.println("REQUEST VALID MOVES CALLED");
+    public static String colToFile(int col) {
+        switch (col) {
+            case 0 -> { return "a"; }
+            case 1 -> { return "b"; }
+            case 2 -> { return "c"; }
+            case 3 -> { return "d"; }
+            case 4 -> { return "e"; }
+            case 5 -> { return "f"; }
+            case 6 -> { return "g"; }
+            case 7 -> { return "h"; }
+            default -> { return ""; }
+        }
+    }
+
+    public void requestValidMoves(Board board) {
         GetValidMoves validMovesMsg = GetValidMoves.newBuilder()
-                .setBoard(ChessBoard.generateBoard())
+                .setBoard(board)
                 .setPieceToMove(protoPiece)
                 .build();
-//        System.out.println("CALLING COMMS.send");
         validMoves.clear();
         Comms.send(Common.MessageID.GET_VALID_MOVES, validMovesMsg, this::handleValidMoveResponse);
-
     }
     void handleValidMoveResponse(byte[] bytes) {
         try {
-//            System.out.println("-----------------------");
-//            System.out.println("PIECE PROCESSING Valid Move Response");
             ValidMovesResponse response = ValidMovesResponse.parseFrom(bytes);
             validMoves.addAll(response.getMovesList());
         } catch (InvalidProtocolBufferException e) {
@@ -89,12 +162,13 @@ public abstract class Piece implements Serializable {
         }
     }
 
-
-
-
-
-
-
+    public void clearValids() {
+        validMoves.clear();
+    }
+    public void updateValids(List<Position> valids) {
+        validMoves.clear();
+        validMoves.addAll(valids);
+    }
 
     public List<Position> getValidMoves() {
         return validMoves;
@@ -139,5 +213,13 @@ public abstract class Piece implements Serializable {
                 return true;
         }
         return false;
+    }
+
+    public ChessTile getTile() {
+        return tile;
+    }
+
+    public boolean isPiece(PieceColor color, PieceType type) {
+        return getColor().equals(color) && getType().equals(type);
     }
 }

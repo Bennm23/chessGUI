@@ -14,7 +14,7 @@ version '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
     flatDir {
-        dirs("../lib")
+        dirs("/usr/local/lib/javafx-sdk-21.0.5/lib")
     }
 }
 
@@ -35,7 +35,7 @@ application {
 }
 
 javafx {
-    version = '19'
+    version = '21'
     modules = ['javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.media']
 }
 

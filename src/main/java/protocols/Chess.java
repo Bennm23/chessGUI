@@ -1645,34 +1645,38 @@ public final class Chess {
     protocols.Chess.PieceColor getPlayerToMove();
 
     /**
+     * <pre>
+     * repeated Move valid_moves = 4;
+     * </pre>
+     *
      * <code>int32 turnCount = 3;</code>
      * @return The turnCount.
      */
     int getTurnCount();
 
     /**
-     * <code>repeated .Move valid_moves = 4;</code>
+     * <code>bool black_long_castle = 5;</code>
+     * @return The blackLongCastle.
      */
-    java.util.List<protocols.Chess.Move> 
-        getValidMovesList();
+    boolean getBlackLongCastle();
+
     /**
-     * <code>repeated .Move valid_moves = 4;</code>
+     * <code>bool black_castle = 6;</code>
+     * @return The blackCastle.
      */
-    protocols.Chess.Move getValidMoves(int index);
+    boolean getBlackCastle();
+
     /**
-     * <code>repeated .Move valid_moves = 4;</code>
+     * <code>bool white_long_castle = 7;</code>
+     * @return The whiteLongCastle.
      */
-    int getValidMovesCount();
+    boolean getWhiteLongCastle();
+
     /**
-     * <code>repeated .Move valid_moves = 4;</code>
+     * <code>bool white_castle = 8;</code>
+     * @return The whiteCastle.
      */
-    java.util.List<? extends protocols.Chess.MoveOrBuilder> 
-        getValidMovesOrBuilderList();
-    /**
-     * <code>repeated .Move valid_moves = 4;</code>
-     */
-    protocols.Chess.MoveOrBuilder getValidMovesOrBuilder(
-        int index);
+    boolean getWhiteCastle();
   }
   /**
    * Protobuf type {@code Board}
@@ -1689,7 +1693,6 @@ public final class Chess {
     private Board() {
       pieces_ = java.util.Collections.emptyList();
       playerToMove_ = 0;
-      validMoves_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -1743,13 +1746,24 @@ public final class Chess {
               turnCount_ = input.readInt32();
               break;
             }
-            case 34: {
-              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-                validMoves_ = new java.util.ArrayList<protocols.Chess.Move>();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              validMoves_.add(
-                  input.readMessage(protocols.Chess.Move.parser(), extensionRegistry));
+            case 40: {
+
+              blackLongCastle_ = input.readBool();
+              break;
+            }
+            case 48: {
+
+              blackCastle_ = input.readBool();
+              break;
+            }
+            case 56: {
+
+              whiteLongCastle_ = input.readBool();
+              break;
+            }
+            case 64: {
+
+              whiteCastle_ = input.readBool();
               break;
             }
             default: {
@@ -1769,9 +1783,6 @@ public final class Chess {
       } finally {
         if (((mutable_bitField0_ & 0x00000001) != 0)) {
           pieces_ = java.util.Collections.unmodifiableList(pieces_);
-        }
-        if (((mutable_bitField0_ & 0x00000002) != 0)) {
-          validMoves_ = java.util.Collections.unmodifiableList(validMoves_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -1852,6 +1863,10 @@ public final class Chess {
     public static final int TURNCOUNT_FIELD_NUMBER = 3;
     private int turnCount_;
     /**
+     * <pre>
+     * repeated Move valid_moves = 4;
+     * </pre>
+     *
      * <code>int32 turnCount = 3;</code>
      * @return The turnCount.
      */
@@ -1860,44 +1875,48 @@ public final class Chess {
       return turnCount_;
     }
 
-    public static final int VALID_MOVES_FIELD_NUMBER = 4;
-    private java.util.List<protocols.Chess.Move> validMoves_;
+    public static final int BLACK_LONG_CASTLE_FIELD_NUMBER = 5;
+    private boolean blackLongCastle_;
     /**
-     * <code>repeated .Move valid_moves = 4;</code>
+     * <code>bool black_long_castle = 5;</code>
+     * @return The blackLongCastle.
      */
     @java.lang.Override
-    public java.util.List<protocols.Chess.Move> getValidMovesList() {
-      return validMoves_;
+    public boolean getBlackLongCastle() {
+      return blackLongCastle_;
     }
+
+    public static final int BLACK_CASTLE_FIELD_NUMBER = 6;
+    private boolean blackCastle_;
     /**
-     * <code>repeated .Move valid_moves = 4;</code>
+     * <code>bool black_castle = 6;</code>
+     * @return The blackCastle.
      */
     @java.lang.Override
-    public java.util.List<? extends protocols.Chess.MoveOrBuilder> 
-        getValidMovesOrBuilderList() {
-      return validMoves_;
+    public boolean getBlackCastle() {
+      return blackCastle_;
     }
+
+    public static final int WHITE_LONG_CASTLE_FIELD_NUMBER = 7;
+    private boolean whiteLongCastle_;
     /**
-     * <code>repeated .Move valid_moves = 4;</code>
+     * <code>bool white_long_castle = 7;</code>
+     * @return The whiteLongCastle.
      */
     @java.lang.Override
-    public int getValidMovesCount() {
-      return validMoves_.size();
+    public boolean getWhiteLongCastle() {
+      return whiteLongCastle_;
     }
+
+    public static final int WHITE_CASTLE_FIELD_NUMBER = 8;
+    private boolean whiteCastle_;
     /**
-     * <code>repeated .Move valid_moves = 4;</code>
+     * <code>bool white_castle = 8;</code>
+     * @return The whiteCastle.
      */
     @java.lang.Override
-    public protocols.Chess.Move getValidMoves(int index) {
-      return validMoves_.get(index);
-    }
-    /**
-     * <code>repeated .Move valid_moves = 4;</code>
-     */
-    @java.lang.Override
-    public protocols.Chess.MoveOrBuilder getValidMovesOrBuilder(
-        int index) {
-      return validMoves_.get(index);
+    public boolean getWhiteCastle() {
+      return whiteCastle_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1923,8 +1942,17 @@ public final class Chess {
       if (turnCount_ != 0) {
         output.writeInt32(3, turnCount_);
       }
-      for (int i = 0; i < validMoves_.size(); i++) {
-        output.writeMessage(4, validMoves_.get(i));
+      if (blackLongCastle_ != false) {
+        output.writeBool(5, blackLongCastle_);
+      }
+      if (blackCastle_ != false) {
+        output.writeBool(6, blackCastle_);
+      }
+      if (whiteLongCastle_ != false) {
+        output.writeBool(7, whiteLongCastle_);
+      }
+      if (whiteCastle_ != false) {
+        output.writeBool(8, whiteCastle_);
       }
       unknownFields.writeTo(output);
     }
@@ -1947,9 +1975,21 @@ public final class Chess {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, turnCount_);
       }
-      for (int i = 0; i < validMoves_.size(); i++) {
+      if (blackLongCastle_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, validMoves_.get(i));
+          .computeBoolSize(5, blackLongCastle_);
+      }
+      if (blackCastle_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(6, blackCastle_);
+      }
+      if (whiteLongCastle_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(7, whiteLongCastle_);
+      }
+      if (whiteCastle_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(8, whiteCastle_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1971,8 +2011,14 @@ public final class Chess {
       if (playerToMove_ != other.playerToMove_) return false;
       if (getTurnCount()
           != other.getTurnCount()) return false;
-      if (!getValidMovesList()
-          .equals(other.getValidMovesList())) return false;
+      if (getBlackLongCastle()
+          != other.getBlackLongCastle()) return false;
+      if (getBlackCastle()
+          != other.getBlackCastle()) return false;
+      if (getWhiteLongCastle()
+          != other.getWhiteLongCastle()) return false;
+      if (getWhiteCastle()
+          != other.getWhiteCastle()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1992,10 +2038,18 @@ public final class Chess {
       hash = (53 * hash) + playerToMove_;
       hash = (37 * hash) + TURNCOUNT_FIELD_NUMBER;
       hash = (53 * hash) + getTurnCount();
-      if (getValidMovesCount() > 0) {
-        hash = (37 * hash) + VALID_MOVES_FIELD_NUMBER;
-        hash = (53 * hash) + getValidMovesList().hashCode();
-      }
+      hash = (37 * hash) + BLACK_LONG_CASTLE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getBlackLongCastle());
+      hash = (37 * hash) + BLACK_CASTLE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getBlackCastle());
+      hash = (37 * hash) + WHITE_LONG_CASTLE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getWhiteLongCastle());
+      hash = (37 * hash) + WHITE_CASTLE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getWhiteCastle());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2125,7 +2179,6 @@ public final class Chess {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
           getPiecesFieldBuilder();
-          getValidMovesFieldBuilder();
         }
       }
       @java.lang.Override
@@ -2141,12 +2194,14 @@ public final class Chess {
 
         turnCount_ = 0;
 
-        if (validMovesBuilder_ == null) {
-          validMoves_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
-        } else {
-          validMovesBuilder_.clear();
-        }
+        blackLongCastle_ = false;
+
+        blackCastle_ = false;
+
+        whiteLongCastle_ = false;
+
+        whiteCastle_ = false;
+
         return this;
       }
 
@@ -2185,15 +2240,10 @@ public final class Chess {
         }
         result.playerToMove_ = playerToMove_;
         result.turnCount_ = turnCount_;
-        if (validMovesBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) != 0)) {
-            validMoves_ = java.util.Collections.unmodifiableList(validMoves_);
-            bitField0_ = (bitField0_ & ~0x00000002);
-          }
-          result.validMoves_ = validMoves_;
-        } else {
-          result.validMoves_ = validMovesBuilder_.build();
-        }
+        result.blackLongCastle_ = blackLongCastle_;
+        result.blackCastle_ = blackCastle_;
+        result.whiteLongCastle_ = whiteLongCastle_;
+        result.whiteCastle_ = whiteCastle_;
         onBuilt();
         return result;
       }
@@ -2274,31 +2324,17 @@ public final class Chess {
         if (other.getTurnCount() != 0) {
           setTurnCount(other.getTurnCount());
         }
-        if (validMovesBuilder_ == null) {
-          if (!other.validMoves_.isEmpty()) {
-            if (validMoves_.isEmpty()) {
-              validMoves_ = other.validMoves_;
-              bitField0_ = (bitField0_ & ~0x00000002);
-            } else {
-              ensureValidMovesIsMutable();
-              validMoves_.addAll(other.validMoves_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.validMoves_.isEmpty()) {
-            if (validMovesBuilder_.isEmpty()) {
-              validMovesBuilder_.dispose();
-              validMovesBuilder_ = null;
-              validMoves_ = other.validMoves_;
-              bitField0_ = (bitField0_ & ~0x00000002);
-              validMovesBuilder_ = 
-                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getValidMovesFieldBuilder() : null;
-            } else {
-              validMovesBuilder_.addAllMessages(other.validMoves_);
-            }
-          }
+        if (other.getBlackLongCastle() != false) {
+          setBlackLongCastle(other.getBlackLongCastle());
+        }
+        if (other.getBlackCastle() != false) {
+          setBlackCastle(other.getBlackCastle());
+        }
+        if (other.getWhiteLongCastle() != false) {
+          setWhiteLongCastle(other.getWhiteLongCastle());
+        }
+        if (other.getWhiteCastle() != false) {
+          setWhiteCastle(other.getWhiteCastle());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2626,6 +2662,10 @@ public final class Chess {
 
       private int turnCount_ ;
       /**
+       * <pre>
+       * repeated Move valid_moves = 4;
+       * </pre>
+       *
        * <code>int32 turnCount = 3;</code>
        * @return The turnCount.
        */
@@ -2634,6 +2674,10 @@ public final class Chess {
         return turnCount_;
       }
       /**
+       * <pre>
+       * repeated Move valid_moves = 4;
+       * </pre>
+       *
        * <code>int32 turnCount = 3;</code>
        * @param value The turnCount to set.
        * @return This builder for chaining.
@@ -2645,6 +2689,10 @@ public final class Chess {
         return this;
       }
       /**
+       * <pre>
+       * repeated Move valid_moves = 4;
+       * </pre>
+       *
        * <code>int32 turnCount = 3;</code>
        * @return This builder for chaining.
        */
@@ -2655,244 +2703,128 @@ public final class Chess {
         return this;
       }
 
-      private java.util.List<protocols.Chess.Move> validMoves_ =
-        java.util.Collections.emptyList();
-      private void ensureValidMovesIsMutable() {
-        if (!((bitField0_ & 0x00000002) != 0)) {
-          validMoves_ = new java.util.ArrayList<protocols.Chess.Move>(validMoves_);
-          bitField0_ |= 0x00000002;
-         }
+      private boolean blackLongCastle_ ;
+      /**
+       * <code>bool black_long_castle = 5;</code>
+       * @return The blackLongCastle.
+       */
+      @java.lang.Override
+      public boolean getBlackLongCastle() {
+        return blackLongCastle_;
+      }
+      /**
+       * <code>bool black_long_castle = 5;</code>
+       * @param value The blackLongCastle to set.
+       * @return This builder for chaining.
+       */
+      public Builder setBlackLongCastle(boolean value) {
+        
+        blackLongCastle_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool black_long_castle = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearBlackLongCastle() {
+        
+        blackLongCastle_ = false;
+        onChanged();
+        return this;
       }
 
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          protocols.Chess.Move, protocols.Chess.Move.Builder, protocols.Chess.MoveOrBuilder> validMovesBuilder_;
+      private boolean blackCastle_ ;
+      /**
+       * <code>bool black_castle = 6;</code>
+       * @return The blackCastle.
+       */
+      @java.lang.Override
+      public boolean getBlackCastle() {
+        return blackCastle_;
+      }
+      /**
+       * <code>bool black_castle = 6;</code>
+       * @param value The blackCastle to set.
+       * @return This builder for chaining.
+       */
+      public Builder setBlackCastle(boolean value) {
+        
+        blackCastle_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool black_castle = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearBlackCastle() {
+        
+        blackCastle_ = false;
+        onChanged();
+        return this;
+      }
 
+      private boolean whiteLongCastle_ ;
       /**
-       * <code>repeated .Move valid_moves = 4;</code>
+       * <code>bool white_long_castle = 7;</code>
+       * @return The whiteLongCastle.
        */
-      public java.util.List<protocols.Chess.Move> getValidMovesList() {
-        if (validMovesBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(validMoves_);
-        } else {
-          return validMovesBuilder_.getMessageList();
-        }
+      @java.lang.Override
+      public boolean getWhiteLongCastle() {
+        return whiteLongCastle_;
       }
       /**
-       * <code>repeated .Move valid_moves = 4;</code>
+       * <code>bool white_long_castle = 7;</code>
+       * @param value The whiteLongCastle to set.
+       * @return This builder for chaining.
        */
-      public int getValidMovesCount() {
-        if (validMovesBuilder_ == null) {
-          return validMoves_.size();
-        } else {
-          return validMovesBuilder_.getCount();
-        }
-      }
-      /**
-       * <code>repeated .Move valid_moves = 4;</code>
-       */
-      public protocols.Chess.Move getValidMoves(int index) {
-        if (validMovesBuilder_ == null) {
-          return validMoves_.get(index);
-        } else {
-          return validMovesBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .Move valid_moves = 4;</code>
-       */
-      public Builder setValidMoves(
-          int index, protocols.Chess.Move value) {
-        if (validMovesBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureValidMovesIsMutable();
-          validMoves_.set(index, value);
-          onChanged();
-        } else {
-          validMovesBuilder_.setMessage(index, value);
-        }
+      public Builder setWhiteLongCastle(boolean value) {
+        
+        whiteLongCastle_ = value;
+        onChanged();
         return this;
       }
       /**
-       * <code>repeated .Move valid_moves = 4;</code>
+       * <code>bool white_long_castle = 7;</code>
+       * @return This builder for chaining.
        */
-      public Builder setValidMoves(
-          int index, protocols.Chess.Move.Builder builderForValue) {
-        if (validMovesBuilder_ == null) {
-          ensureValidMovesIsMutable();
-          validMoves_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          validMovesBuilder_.setMessage(index, builderForValue.build());
-        }
+      public Builder clearWhiteLongCastle() {
+        
+        whiteLongCastle_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean whiteCastle_ ;
+      /**
+       * <code>bool white_castle = 8;</code>
+       * @return The whiteCastle.
+       */
+      @java.lang.Override
+      public boolean getWhiteCastle() {
+        return whiteCastle_;
+      }
+      /**
+       * <code>bool white_castle = 8;</code>
+       * @param value The whiteCastle to set.
+       * @return This builder for chaining.
+       */
+      public Builder setWhiteCastle(boolean value) {
+        
+        whiteCastle_ = value;
+        onChanged();
         return this;
       }
       /**
-       * <code>repeated .Move valid_moves = 4;</code>
+       * <code>bool white_castle = 8;</code>
+       * @return This builder for chaining.
        */
-      public Builder addValidMoves(protocols.Chess.Move value) {
-        if (validMovesBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureValidMovesIsMutable();
-          validMoves_.add(value);
-          onChanged();
-        } else {
-          validMovesBuilder_.addMessage(value);
-        }
+      public Builder clearWhiteCastle() {
+        
+        whiteCastle_ = false;
+        onChanged();
         return this;
-      }
-      /**
-       * <code>repeated .Move valid_moves = 4;</code>
-       */
-      public Builder addValidMoves(
-          int index, protocols.Chess.Move value) {
-        if (validMovesBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureValidMovesIsMutable();
-          validMoves_.add(index, value);
-          onChanged();
-        } else {
-          validMovesBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .Move valid_moves = 4;</code>
-       */
-      public Builder addValidMoves(
-          protocols.Chess.Move.Builder builderForValue) {
-        if (validMovesBuilder_ == null) {
-          ensureValidMovesIsMutable();
-          validMoves_.add(builderForValue.build());
-          onChanged();
-        } else {
-          validMovesBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .Move valid_moves = 4;</code>
-       */
-      public Builder addValidMoves(
-          int index, protocols.Chess.Move.Builder builderForValue) {
-        if (validMovesBuilder_ == null) {
-          ensureValidMovesIsMutable();
-          validMoves_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          validMovesBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .Move valid_moves = 4;</code>
-       */
-      public Builder addAllValidMoves(
-          java.lang.Iterable<? extends protocols.Chess.Move> values) {
-        if (validMovesBuilder_ == null) {
-          ensureValidMovesIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, validMoves_);
-          onChanged();
-        } else {
-          validMovesBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .Move valid_moves = 4;</code>
-       */
-      public Builder clearValidMoves() {
-        if (validMovesBuilder_ == null) {
-          validMoves_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
-          onChanged();
-        } else {
-          validMovesBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .Move valid_moves = 4;</code>
-       */
-      public Builder removeValidMoves(int index) {
-        if (validMovesBuilder_ == null) {
-          ensureValidMovesIsMutable();
-          validMoves_.remove(index);
-          onChanged();
-        } else {
-          validMovesBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .Move valid_moves = 4;</code>
-       */
-      public protocols.Chess.Move.Builder getValidMovesBuilder(
-          int index) {
-        return getValidMovesFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .Move valid_moves = 4;</code>
-       */
-      public protocols.Chess.MoveOrBuilder getValidMovesOrBuilder(
-          int index) {
-        if (validMovesBuilder_ == null) {
-          return validMoves_.get(index);  } else {
-          return validMovesBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .Move valid_moves = 4;</code>
-       */
-      public java.util.List<? extends protocols.Chess.MoveOrBuilder> 
-           getValidMovesOrBuilderList() {
-        if (validMovesBuilder_ != null) {
-          return validMovesBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(validMoves_);
-        }
-      }
-      /**
-       * <code>repeated .Move valid_moves = 4;</code>
-       */
-      public protocols.Chess.Move.Builder addValidMovesBuilder() {
-        return getValidMovesFieldBuilder().addBuilder(
-            protocols.Chess.Move.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .Move valid_moves = 4;</code>
-       */
-      public protocols.Chess.Move.Builder addValidMovesBuilder(
-          int index) {
-        return getValidMovesFieldBuilder().addBuilder(
-            index, protocols.Chess.Move.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .Move valid_moves = 4;</code>
-       */
-      public java.util.List<protocols.Chess.Move.Builder> 
-           getValidMovesBuilderList() {
-        return getValidMovesFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          protocols.Chess.Move, protocols.Chess.Move.Builder, protocols.Chess.MoveOrBuilder> 
-          getValidMovesFieldBuilder() {
-        if (validMovesBuilder_ == null) {
-          validMovesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              protocols.Chess.Move, protocols.Chess.Move.Builder, protocols.Chess.MoveOrBuilder>(
-                  validMoves_,
-                  ((bitField0_ & 0x00000002) != 0),
-                  getParentForChildren(),
-                  isClean());
-          validMoves_ = null;
-        }
-        return validMovesBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -3798,6 +3730,21 @@ public final class Chess {
      */
     protocols.Chess.PositionOrBuilder getMovesOrBuilder(
         int index);
+
+    /**
+     * <code>.ProtoPiece request_piece = 2;</code>
+     * @return Whether the requestPiece field is set.
+     */
+    boolean hasRequestPiece();
+    /**
+     * <code>.ProtoPiece request_piece = 2;</code>
+     * @return The requestPiece.
+     */
+    protocols.Chess.ProtoPiece getRequestPiece();
+    /**
+     * <code>.ProtoPiece request_piece = 2;</code>
+     */
+    protocols.Chess.ProtoPieceOrBuilder getRequestPieceOrBuilder();
   }
   /**
    * Protobuf type {@code ValidMovesResponse}
@@ -3853,6 +3800,19 @@ public final class Chess {
               }
               moves_.add(
                   input.readMessage(protocols.Chess.Position.parser(), extensionRegistry));
+              break;
+            }
+            case 18: {
+              protocols.Chess.ProtoPiece.Builder subBuilder = null;
+              if (requestPiece_ != null) {
+                subBuilder = requestPiece_.toBuilder();
+              }
+              requestPiece_ = input.readMessage(protocols.Chess.ProtoPiece.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(requestPiece_);
+                requestPiece_ = subBuilder.buildPartial();
+              }
+
               break;
             }
             default: {
@@ -3930,6 +3890,32 @@ public final class Chess {
       return moves_.get(index);
     }
 
+    public static final int REQUEST_PIECE_FIELD_NUMBER = 2;
+    private protocols.Chess.ProtoPiece requestPiece_;
+    /**
+     * <code>.ProtoPiece request_piece = 2;</code>
+     * @return Whether the requestPiece field is set.
+     */
+    @java.lang.Override
+    public boolean hasRequestPiece() {
+      return requestPiece_ != null;
+    }
+    /**
+     * <code>.ProtoPiece request_piece = 2;</code>
+     * @return The requestPiece.
+     */
+    @java.lang.Override
+    public protocols.Chess.ProtoPiece getRequestPiece() {
+      return requestPiece_ == null ? protocols.Chess.ProtoPiece.getDefaultInstance() : requestPiece_;
+    }
+    /**
+     * <code>.ProtoPiece request_piece = 2;</code>
+     */
+    @java.lang.Override
+    public protocols.Chess.ProtoPieceOrBuilder getRequestPieceOrBuilder() {
+      return getRequestPiece();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -3947,6 +3933,9 @@ public final class Chess {
       for (int i = 0; i < moves_.size(); i++) {
         output.writeMessage(1, moves_.get(i));
       }
+      if (requestPiece_ != null) {
+        output.writeMessage(2, getRequestPiece());
+      }
       unknownFields.writeTo(output);
     }
 
@@ -3959,6 +3948,10 @@ public final class Chess {
       for (int i = 0; i < moves_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, moves_.get(i));
+      }
+      if (requestPiece_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getRequestPiece());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3977,6 +3970,11 @@ public final class Chess {
 
       if (!getMovesList()
           .equals(other.getMovesList())) return false;
+      if (hasRequestPiece() != other.hasRequestPiece()) return false;
+      if (hasRequestPiece()) {
+        if (!getRequestPiece()
+            .equals(other.getRequestPiece())) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -3991,6 +3989,10 @@ public final class Chess {
       if (getMovesCount() > 0) {
         hash = (37 * hash) + MOVES_FIELD_NUMBER;
         hash = (53 * hash) + getMovesList().hashCode();
+      }
+      if (hasRequestPiece()) {
+        hash = (37 * hash) + REQUEST_PIECE_FIELD_NUMBER;
+        hash = (53 * hash) + getRequestPiece().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -4132,6 +4134,12 @@ public final class Chess {
         } else {
           movesBuilder_.clear();
         }
+        if (requestPieceBuilder_ == null) {
+          requestPiece_ = null;
+        } else {
+          requestPiece_ = null;
+          requestPieceBuilder_ = null;
+        }
         return this;
       }
 
@@ -4167,6 +4175,11 @@ public final class Chess {
           result.moves_ = moves_;
         } else {
           result.moves_ = movesBuilder_.build();
+        }
+        if (requestPieceBuilder_ == null) {
+          result.requestPiece_ = requestPiece_;
+        } else {
+          result.requestPiece_ = requestPieceBuilder_.build();
         }
         onBuilt();
         return result;
@@ -4241,6 +4254,9 @@ public final class Chess {
               movesBuilder_.addAllMessages(other.moves_);
             }
           }
+        }
+        if (other.hasRequestPiece()) {
+          mergeRequestPiece(other.getRequestPiece());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -4510,6 +4526,125 @@ public final class Chess {
           moves_ = null;
         }
         return movesBuilder_;
+      }
+
+      private protocols.Chess.ProtoPiece requestPiece_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          protocols.Chess.ProtoPiece, protocols.Chess.ProtoPiece.Builder, protocols.Chess.ProtoPieceOrBuilder> requestPieceBuilder_;
+      /**
+       * <code>.ProtoPiece request_piece = 2;</code>
+       * @return Whether the requestPiece field is set.
+       */
+      public boolean hasRequestPiece() {
+        return requestPieceBuilder_ != null || requestPiece_ != null;
+      }
+      /**
+       * <code>.ProtoPiece request_piece = 2;</code>
+       * @return The requestPiece.
+       */
+      public protocols.Chess.ProtoPiece getRequestPiece() {
+        if (requestPieceBuilder_ == null) {
+          return requestPiece_ == null ? protocols.Chess.ProtoPiece.getDefaultInstance() : requestPiece_;
+        } else {
+          return requestPieceBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.ProtoPiece request_piece = 2;</code>
+       */
+      public Builder setRequestPiece(protocols.Chess.ProtoPiece value) {
+        if (requestPieceBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          requestPiece_ = value;
+          onChanged();
+        } else {
+          requestPieceBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.ProtoPiece request_piece = 2;</code>
+       */
+      public Builder setRequestPiece(
+          protocols.Chess.ProtoPiece.Builder builderForValue) {
+        if (requestPieceBuilder_ == null) {
+          requestPiece_ = builderForValue.build();
+          onChanged();
+        } else {
+          requestPieceBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.ProtoPiece request_piece = 2;</code>
+       */
+      public Builder mergeRequestPiece(protocols.Chess.ProtoPiece value) {
+        if (requestPieceBuilder_ == null) {
+          if (requestPiece_ != null) {
+            requestPiece_ =
+              protocols.Chess.ProtoPiece.newBuilder(requestPiece_).mergeFrom(value).buildPartial();
+          } else {
+            requestPiece_ = value;
+          }
+          onChanged();
+        } else {
+          requestPieceBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.ProtoPiece request_piece = 2;</code>
+       */
+      public Builder clearRequestPiece() {
+        if (requestPieceBuilder_ == null) {
+          requestPiece_ = null;
+          onChanged();
+        } else {
+          requestPiece_ = null;
+          requestPieceBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.ProtoPiece request_piece = 2;</code>
+       */
+      public protocols.Chess.ProtoPiece.Builder getRequestPieceBuilder() {
+        
+        onChanged();
+        return getRequestPieceFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.ProtoPiece request_piece = 2;</code>
+       */
+      public protocols.Chess.ProtoPieceOrBuilder getRequestPieceOrBuilder() {
+        if (requestPieceBuilder_ != null) {
+          return requestPieceBuilder_.getMessageOrBuilder();
+        } else {
+          return requestPiece_ == null ?
+              protocols.Chess.ProtoPiece.getDefaultInstance() : requestPiece_;
+        }
+      }
+      /**
+       * <code>.ProtoPiece request_piece = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          protocols.Chess.ProtoPiece, protocols.Chess.ProtoPiece.Builder, protocols.Chess.ProtoPieceOrBuilder> 
+          getRequestPieceFieldBuilder() {
+        if (requestPieceBuilder_ == null) {
+          requestPieceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              protocols.Chess.ProtoPiece, protocols.Chess.ProtoPiece.Builder, protocols.Chess.ProtoPieceOrBuilder>(
+                  getRequestPiece(),
+                  getParentForChildren(),
+                  isClean());
+          requestPiece_ = null;
+        }
+        return requestPieceBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -5325,6 +5460,21 @@ public final class Chess {
      * <code>.Position end_position = 2;</code>
      */
     protocols.Chess.PositionOrBuilder getEndPositionOrBuilder();
+
+    /**
+     * <code>.Position secondary_end_pos = 3;</code>
+     * @return Whether the secondaryEndPos field is set.
+     */
+    boolean hasSecondaryEndPos();
+    /**
+     * <code>.Position secondary_end_pos = 3;</code>
+     * @return The secondaryEndPos.
+     */
+    protocols.Chess.Position getSecondaryEndPos();
+    /**
+     * <code>.Position secondary_end_pos = 3;</code>
+     */
+    protocols.Chess.PositionOrBuilder getSecondaryEndPosOrBuilder();
   }
   /**
    * Protobuf type {@code Move}
@@ -5393,6 +5543,19 @@ public final class Chess {
               if (subBuilder != null) {
                 subBuilder.mergeFrom(endPosition_);
                 endPosition_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 26: {
+              protocols.Chess.Position.Builder subBuilder = null;
+              if (secondaryEndPos_ != null) {
+                subBuilder = secondaryEndPos_.toBuilder();
+              }
+              secondaryEndPos_ = input.readMessage(protocols.Chess.Position.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(secondaryEndPos_);
+                secondaryEndPos_ = subBuilder.buildPartial();
               }
 
               break;
@@ -5481,6 +5644,32 @@ public final class Chess {
       return getEndPosition();
     }
 
+    public static final int SECONDARY_END_POS_FIELD_NUMBER = 3;
+    private protocols.Chess.Position secondaryEndPos_;
+    /**
+     * <code>.Position secondary_end_pos = 3;</code>
+     * @return Whether the secondaryEndPos field is set.
+     */
+    @java.lang.Override
+    public boolean hasSecondaryEndPos() {
+      return secondaryEndPos_ != null;
+    }
+    /**
+     * <code>.Position secondary_end_pos = 3;</code>
+     * @return The secondaryEndPos.
+     */
+    @java.lang.Override
+    public protocols.Chess.Position getSecondaryEndPos() {
+      return secondaryEndPos_ == null ? protocols.Chess.Position.getDefaultInstance() : secondaryEndPos_;
+    }
+    /**
+     * <code>.Position secondary_end_pos = 3;</code>
+     */
+    @java.lang.Override
+    public protocols.Chess.PositionOrBuilder getSecondaryEndPosOrBuilder() {
+      return getSecondaryEndPos();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -5501,6 +5690,9 @@ public final class Chess {
       if (endPosition_ != null) {
         output.writeMessage(2, getEndPosition());
       }
+      if (secondaryEndPos_ != null) {
+        output.writeMessage(3, getSecondaryEndPos());
+      }
       unknownFields.writeTo(output);
     }
 
@@ -5517,6 +5709,10 @@ public final class Chess {
       if (endPosition_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, getEndPosition());
+      }
+      if (secondaryEndPos_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, getSecondaryEndPos());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -5543,6 +5739,11 @@ public final class Chess {
         if (!getEndPosition()
             .equals(other.getEndPosition())) return false;
       }
+      if (hasSecondaryEndPos() != other.hasSecondaryEndPos()) return false;
+      if (hasSecondaryEndPos()) {
+        if (!getSecondaryEndPos()
+            .equals(other.getSecondaryEndPos())) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -5561,6 +5762,10 @@ public final class Chess {
       if (hasEndPosition()) {
         hash = (37 * hash) + END_POSITION_FIELD_NUMBER;
         hash = (53 * hash) + getEndPosition().hashCode();
+      }
+      if (hasSecondaryEndPos()) {
+        hash = (37 * hash) + SECONDARY_END_POS_FIELD_NUMBER;
+        hash = (53 * hash) + getSecondaryEndPos().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -5707,6 +5912,12 @@ public final class Chess {
           endPosition_ = null;
           endPositionBuilder_ = null;
         }
+        if (secondaryEndPosBuilder_ == null) {
+          secondaryEndPos_ = null;
+        } else {
+          secondaryEndPos_ = null;
+          secondaryEndPosBuilder_ = null;
+        }
         return this;
       }
 
@@ -5742,6 +5953,11 @@ public final class Chess {
           result.endPosition_ = endPosition_;
         } else {
           result.endPosition_ = endPositionBuilder_.build();
+        }
+        if (secondaryEndPosBuilder_ == null) {
+          result.secondaryEndPos_ = secondaryEndPos_;
+        } else {
+          result.secondaryEndPos_ = secondaryEndPosBuilder_.build();
         }
         onBuilt();
         return result;
@@ -5796,6 +6012,9 @@ public final class Chess {
         }
         if (other.hasEndPosition()) {
           mergeEndPosition(other.getEndPosition());
+        }
+        if (other.hasSecondaryEndPos()) {
+          mergeSecondaryEndPos(other.getSecondaryEndPos());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -6062,6 +6281,125 @@ public final class Chess {
           endPosition_ = null;
         }
         return endPositionBuilder_;
+      }
+
+      private protocols.Chess.Position secondaryEndPos_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          protocols.Chess.Position, protocols.Chess.Position.Builder, protocols.Chess.PositionOrBuilder> secondaryEndPosBuilder_;
+      /**
+       * <code>.Position secondary_end_pos = 3;</code>
+       * @return Whether the secondaryEndPos field is set.
+       */
+      public boolean hasSecondaryEndPos() {
+        return secondaryEndPosBuilder_ != null || secondaryEndPos_ != null;
+      }
+      /**
+       * <code>.Position secondary_end_pos = 3;</code>
+       * @return The secondaryEndPos.
+       */
+      public protocols.Chess.Position getSecondaryEndPos() {
+        if (secondaryEndPosBuilder_ == null) {
+          return secondaryEndPos_ == null ? protocols.Chess.Position.getDefaultInstance() : secondaryEndPos_;
+        } else {
+          return secondaryEndPosBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.Position secondary_end_pos = 3;</code>
+       */
+      public Builder setSecondaryEndPos(protocols.Chess.Position value) {
+        if (secondaryEndPosBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          secondaryEndPos_ = value;
+          onChanged();
+        } else {
+          secondaryEndPosBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Position secondary_end_pos = 3;</code>
+       */
+      public Builder setSecondaryEndPos(
+          protocols.Chess.Position.Builder builderForValue) {
+        if (secondaryEndPosBuilder_ == null) {
+          secondaryEndPos_ = builderForValue.build();
+          onChanged();
+        } else {
+          secondaryEndPosBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Position secondary_end_pos = 3;</code>
+       */
+      public Builder mergeSecondaryEndPos(protocols.Chess.Position value) {
+        if (secondaryEndPosBuilder_ == null) {
+          if (secondaryEndPos_ != null) {
+            secondaryEndPos_ =
+              protocols.Chess.Position.newBuilder(secondaryEndPos_).mergeFrom(value).buildPartial();
+          } else {
+            secondaryEndPos_ = value;
+          }
+          onChanged();
+        } else {
+          secondaryEndPosBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Position secondary_end_pos = 3;</code>
+       */
+      public Builder clearSecondaryEndPos() {
+        if (secondaryEndPosBuilder_ == null) {
+          secondaryEndPos_ = null;
+          onChanged();
+        } else {
+          secondaryEndPos_ = null;
+          secondaryEndPosBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Position secondary_end_pos = 3;</code>
+       */
+      public protocols.Chess.Position.Builder getSecondaryEndPosBuilder() {
+        
+        onChanged();
+        return getSecondaryEndPosFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.Position secondary_end_pos = 3;</code>
+       */
+      public protocols.Chess.PositionOrBuilder getSecondaryEndPosOrBuilder() {
+        if (secondaryEndPosBuilder_ != null) {
+          return secondaryEndPosBuilder_.getMessageOrBuilder();
+        } else {
+          return secondaryEndPos_ == null ?
+              protocols.Chess.Position.getDefaultInstance() : secondaryEndPos_;
+        }
+      }
+      /**
+       * <code>.Position secondary_end_pos = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          protocols.Chess.Position, protocols.Chess.Position.Builder, protocols.Chess.PositionOrBuilder> 
+          getSecondaryEndPosFieldBuilder() {
+        if (secondaryEndPosBuilder_ == null) {
+          secondaryEndPosBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              protocols.Chess.Position, protocols.Chess.Position.Builder, protocols.Chess.PositionOrBuilder>(
+                  getSecondaryEndPos(),
+                  getParentForChildren(),
+                  isClean());
+          secondaryEndPos_ = null;
+        }
+        return secondaryEndPosBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -6737,6 +7075,1505 @@ public final class Chess {
 
   }
 
+  public interface FindBestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:FindBest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string fen_string = 1;</code>
+     * @return The fenString.
+     */
+    java.lang.String getFenString();
+    /**
+     * <code>string fen_string = 1;</code>
+     * @return The bytes for fenString.
+     */
+    com.google.protobuf.ByteString
+        getFenStringBytes();
+  }
+  /**
+   * Protobuf type {@code FindBest}
+   */
+  public static final class FindBest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:FindBest)
+      FindBestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use FindBest.newBuilder() to construct.
+    private FindBest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private FindBest() {
+      fenString_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new FindBest();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private FindBest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              fenString_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return protocols.Chess.internal_static_FindBest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return protocols.Chess.internal_static_FindBest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              protocols.Chess.FindBest.class, protocols.Chess.FindBest.Builder.class);
+    }
+
+    public static final int FEN_STRING_FIELD_NUMBER = 1;
+    private volatile java.lang.Object fenString_;
+    /**
+     * <code>string fen_string = 1;</code>
+     * @return The fenString.
+     */
+    @java.lang.Override
+    public java.lang.String getFenString() {
+      java.lang.Object ref = fenString_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        fenString_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string fen_string = 1;</code>
+     * @return The bytes for fenString.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getFenStringBytes() {
+      java.lang.Object ref = fenString_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        fenString_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getFenStringBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, fenString_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getFenStringBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, fenString_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof protocols.Chess.FindBest)) {
+        return super.equals(obj);
+      }
+      protocols.Chess.FindBest other = (protocols.Chess.FindBest) obj;
+
+      if (!getFenString()
+          .equals(other.getFenString())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + FEN_STRING_FIELD_NUMBER;
+      hash = (53 * hash) + getFenString().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static protocols.Chess.FindBest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static protocols.Chess.FindBest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static protocols.Chess.FindBest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static protocols.Chess.FindBest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static protocols.Chess.FindBest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static protocols.Chess.FindBest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static protocols.Chess.FindBest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static protocols.Chess.FindBest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static protocols.Chess.FindBest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static protocols.Chess.FindBest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static protocols.Chess.FindBest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static protocols.Chess.FindBest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(protocols.Chess.FindBest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code FindBest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:FindBest)
+        protocols.Chess.FindBestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return protocols.Chess.internal_static_FindBest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return protocols.Chess.internal_static_FindBest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                protocols.Chess.FindBest.class, protocols.Chess.FindBest.Builder.class);
+      }
+
+      // Construct using protocols.Chess.FindBest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        fenString_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return protocols.Chess.internal_static_FindBest_descriptor;
+      }
+
+      @java.lang.Override
+      public protocols.Chess.FindBest getDefaultInstanceForType() {
+        return protocols.Chess.FindBest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public protocols.Chess.FindBest build() {
+        protocols.Chess.FindBest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public protocols.Chess.FindBest buildPartial() {
+        protocols.Chess.FindBest result = new protocols.Chess.FindBest(this);
+        result.fenString_ = fenString_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof protocols.Chess.FindBest) {
+          return mergeFrom((protocols.Chess.FindBest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(protocols.Chess.FindBest other) {
+        if (other == protocols.Chess.FindBest.getDefaultInstance()) return this;
+        if (!other.getFenString().isEmpty()) {
+          fenString_ = other.fenString_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        protocols.Chess.FindBest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (protocols.Chess.FindBest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object fenString_ = "";
+      /**
+       * <code>string fen_string = 1;</code>
+       * @return The fenString.
+       */
+      public java.lang.String getFenString() {
+        java.lang.Object ref = fenString_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          fenString_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string fen_string = 1;</code>
+       * @return The bytes for fenString.
+       */
+      public com.google.protobuf.ByteString
+          getFenStringBytes() {
+        java.lang.Object ref = fenString_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          fenString_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string fen_string = 1;</code>
+       * @param value The fenString to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFenString(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        fenString_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string fen_string = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFenString() {
+        
+        fenString_ = getDefaultInstance().getFenString();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string fen_string = 1;</code>
+       * @param value The bytes for fenString to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFenStringBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        fenString_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:FindBest)
+    }
+
+    // @@protoc_insertion_point(class_scope:FindBest)
+    private static final protocols.Chess.FindBest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new protocols.Chess.FindBest();
+    }
+
+    public static protocols.Chess.FindBest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<FindBest>
+        PARSER = new com.google.protobuf.AbstractParser<FindBest>() {
+      @java.lang.Override
+      public FindBest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new FindBest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<FindBest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<FindBest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public protocols.Chess.FindBest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface FindBestResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:FindBestResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.Position from_pos = 1;</code>
+     * @return Whether the fromPos field is set.
+     */
+    boolean hasFromPos();
+    /**
+     * <code>.Position from_pos = 1;</code>
+     * @return The fromPos.
+     */
+    protocols.Chess.Position getFromPos();
+    /**
+     * <code>.Position from_pos = 1;</code>
+     */
+    protocols.Chess.PositionOrBuilder getFromPosOrBuilder();
+
+    /**
+     * <code>.Position end_pos = 2;</code>
+     * @return Whether the endPos field is set.
+     */
+    boolean hasEndPos();
+    /**
+     * <code>.Position end_pos = 2;</code>
+     * @return The endPos.
+     */
+    protocols.Chess.Position getEndPos();
+    /**
+     * <code>.Position end_pos = 2;</code>
+     */
+    protocols.Chess.PositionOrBuilder getEndPosOrBuilder();
+
+    /**
+     * <code>.PieceType promoted_piece = 3;</code>
+     * @return The enum numeric value on the wire for promotedPiece.
+     */
+    int getPromotedPieceValue();
+    /**
+     * <code>.PieceType promoted_piece = 3;</code>
+     * @return The promotedPiece.
+     */
+    protocols.Chess.PieceType getPromotedPiece();
+  }
+  /**
+   * Protobuf type {@code FindBestResponse}
+   */
+  public static final class FindBestResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:FindBestResponse)
+      FindBestResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use FindBestResponse.newBuilder() to construct.
+    private FindBestResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private FindBestResponse() {
+      promotedPiece_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new FindBestResponse();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private FindBestResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              protocols.Chess.Position.Builder subBuilder = null;
+              if (fromPos_ != null) {
+                subBuilder = fromPos_.toBuilder();
+              }
+              fromPos_ = input.readMessage(protocols.Chess.Position.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(fromPos_);
+                fromPos_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 18: {
+              protocols.Chess.Position.Builder subBuilder = null;
+              if (endPos_ != null) {
+                subBuilder = endPos_.toBuilder();
+              }
+              endPos_ = input.readMessage(protocols.Chess.Position.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(endPos_);
+                endPos_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 24: {
+              int rawValue = input.readEnum();
+
+              promotedPiece_ = rawValue;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return protocols.Chess.internal_static_FindBestResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return protocols.Chess.internal_static_FindBestResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              protocols.Chess.FindBestResponse.class, protocols.Chess.FindBestResponse.Builder.class);
+    }
+
+    public static final int FROM_POS_FIELD_NUMBER = 1;
+    private protocols.Chess.Position fromPos_;
+    /**
+     * <code>.Position from_pos = 1;</code>
+     * @return Whether the fromPos field is set.
+     */
+    @java.lang.Override
+    public boolean hasFromPos() {
+      return fromPos_ != null;
+    }
+    /**
+     * <code>.Position from_pos = 1;</code>
+     * @return The fromPos.
+     */
+    @java.lang.Override
+    public protocols.Chess.Position getFromPos() {
+      return fromPos_ == null ? protocols.Chess.Position.getDefaultInstance() : fromPos_;
+    }
+    /**
+     * <code>.Position from_pos = 1;</code>
+     */
+    @java.lang.Override
+    public protocols.Chess.PositionOrBuilder getFromPosOrBuilder() {
+      return getFromPos();
+    }
+
+    public static final int END_POS_FIELD_NUMBER = 2;
+    private protocols.Chess.Position endPos_;
+    /**
+     * <code>.Position end_pos = 2;</code>
+     * @return Whether the endPos field is set.
+     */
+    @java.lang.Override
+    public boolean hasEndPos() {
+      return endPos_ != null;
+    }
+    /**
+     * <code>.Position end_pos = 2;</code>
+     * @return The endPos.
+     */
+    @java.lang.Override
+    public protocols.Chess.Position getEndPos() {
+      return endPos_ == null ? protocols.Chess.Position.getDefaultInstance() : endPos_;
+    }
+    /**
+     * <code>.Position end_pos = 2;</code>
+     */
+    @java.lang.Override
+    public protocols.Chess.PositionOrBuilder getEndPosOrBuilder() {
+      return getEndPos();
+    }
+
+    public static final int PROMOTED_PIECE_FIELD_NUMBER = 3;
+    private int promotedPiece_;
+    /**
+     * <code>.PieceType promoted_piece = 3;</code>
+     * @return The enum numeric value on the wire for promotedPiece.
+     */
+    @java.lang.Override public int getPromotedPieceValue() {
+      return promotedPiece_;
+    }
+    /**
+     * <code>.PieceType promoted_piece = 3;</code>
+     * @return The promotedPiece.
+     */
+    @java.lang.Override public protocols.Chess.PieceType getPromotedPiece() {
+      @SuppressWarnings("deprecation")
+      protocols.Chess.PieceType result = protocols.Chess.PieceType.valueOf(promotedPiece_);
+      return result == null ? protocols.Chess.PieceType.UNRECOGNIZED : result;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (fromPos_ != null) {
+        output.writeMessage(1, getFromPos());
+      }
+      if (endPos_ != null) {
+        output.writeMessage(2, getEndPos());
+      }
+      if (promotedPiece_ != protocols.Chess.PieceType.NONE.getNumber()) {
+        output.writeEnum(3, promotedPiece_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (fromPos_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getFromPos());
+      }
+      if (endPos_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getEndPos());
+      }
+      if (promotedPiece_ != protocols.Chess.PieceType.NONE.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(3, promotedPiece_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof protocols.Chess.FindBestResponse)) {
+        return super.equals(obj);
+      }
+      protocols.Chess.FindBestResponse other = (protocols.Chess.FindBestResponse) obj;
+
+      if (hasFromPos() != other.hasFromPos()) return false;
+      if (hasFromPos()) {
+        if (!getFromPos()
+            .equals(other.getFromPos())) return false;
+      }
+      if (hasEndPos() != other.hasEndPos()) return false;
+      if (hasEndPos()) {
+        if (!getEndPos()
+            .equals(other.getEndPos())) return false;
+      }
+      if (promotedPiece_ != other.promotedPiece_) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasFromPos()) {
+        hash = (37 * hash) + FROM_POS_FIELD_NUMBER;
+        hash = (53 * hash) + getFromPos().hashCode();
+      }
+      if (hasEndPos()) {
+        hash = (37 * hash) + END_POS_FIELD_NUMBER;
+        hash = (53 * hash) + getEndPos().hashCode();
+      }
+      hash = (37 * hash) + PROMOTED_PIECE_FIELD_NUMBER;
+      hash = (53 * hash) + promotedPiece_;
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static protocols.Chess.FindBestResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static protocols.Chess.FindBestResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static protocols.Chess.FindBestResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static protocols.Chess.FindBestResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static protocols.Chess.FindBestResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static protocols.Chess.FindBestResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static protocols.Chess.FindBestResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static protocols.Chess.FindBestResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static protocols.Chess.FindBestResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static protocols.Chess.FindBestResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static protocols.Chess.FindBestResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static protocols.Chess.FindBestResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(protocols.Chess.FindBestResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code FindBestResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:FindBestResponse)
+        protocols.Chess.FindBestResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return protocols.Chess.internal_static_FindBestResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return protocols.Chess.internal_static_FindBestResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                protocols.Chess.FindBestResponse.class, protocols.Chess.FindBestResponse.Builder.class);
+      }
+
+      // Construct using protocols.Chess.FindBestResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (fromPosBuilder_ == null) {
+          fromPos_ = null;
+        } else {
+          fromPos_ = null;
+          fromPosBuilder_ = null;
+        }
+        if (endPosBuilder_ == null) {
+          endPos_ = null;
+        } else {
+          endPos_ = null;
+          endPosBuilder_ = null;
+        }
+        promotedPiece_ = 0;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return protocols.Chess.internal_static_FindBestResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public protocols.Chess.FindBestResponse getDefaultInstanceForType() {
+        return protocols.Chess.FindBestResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public protocols.Chess.FindBestResponse build() {
+        protocols.Chess.FindBestResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public protocols.Chess.FindBestResponse buildPartial() {
+        protocols.Chess.FindBestResponse result = new protocols.Chess.FindBestResponse(this);
+        if (fromPosBuilder_ == null) {
+          result.fromPos_ = fromPos_;
+        } else {
+          result.fromPos_ = fromPosBuilder_.build();
+        }
+        if (endPosBuilder_ == null) {
+          result.endPos_ = endPos_;
+        } else {
+          result.endPos_ = endPosBuilder_.build();
+        }
+        result.promotedPiece_ = promotedPiece_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof protocols.Chess.FindBestResponse) {
+          return mergeFrom((protocols.Chess.FindBestResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(protocols.Chess.FindBestResponse other) {
+        if (other == protocols.Chess.FindBestResponse.getDefaultInstance()) return this;
+        if (other.hasFromPos()) {
+          mergeFromPos(other.getFromPos());
+        }
+        if (other.hasEndPos()) {
+          mergeEndPos(other.getEndPos());
+        }
+        if (other.promotedPiece_ != 0) {
+          setPromotedPieceValue(other.getPromotedPieceValue());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        protocols.Chess.FindBestResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (protocols.Chess.FindBestResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private protocols.Chess.Position fromPos_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          protocols.Chess.Position, protocols.Chess.Position.Builder, protocols.Chess.PositionOrBuilder> fromPosBuilder_;
+      /**
+       * <code>.Position from_pos = 1;</code>
+       * @return Whether the fromPos field is set.
+       */
+      public boolean hasFromPos() {
+        return fromPosBuilder_ != null || fromPos_ != null;
+      }
+      /**
+       * <code>.Position from_pos = 1;</code>
+       * @return The fromPos.
+       */
+      public protocols.Chess.Position getFromPos() {
+        if (fromPosBuilder_ == null) {
+          return fromPos_ == null ? protocols.Chess.Position.getDefaultInstance() : fromPos_;
+        } else {
+          return fromPosBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.Position from_pos = 1;</code>
+       */
+      public Builder setFromPos(protocols.Chess.Position value) {
+        if (fromPosBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          fromPos_ = value;
+          onChanged();
+        } else {
+          fromPosBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Position from_pos = 1;</code>
+       */
+      public Builder setFromPos(
+          protocols.Chess.Position.Builder builderForValue) {
+        if (fromPosBuilder_ == null) {
+          fromPos_ = builderForValue.build();
+          onChanged();
+        } else {
+          fromPosBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Position from_pos = 1;</code>
+       */
+      public Builder mergeFromPos(protocols.Chess.Position value) {
+        if (fromPosBuilder_ == null) {
+          if (fromPos_ != null) {
+            fromPos_ =
+              protocols.Chess.Position.newBuilder(fromPos_).mergeFrom(value).buildPartial();
+          } else {
+            fromPos_ = value;
+          }
+          onChanged();
+        } else {
+          fromPosBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Position from_pos = 1;</code>
+       */
+      public Builder clearFromPos() {
+        if (fromPosBuilder_ == null) {
+          fromPos_ = null;
+          onChanged();
+        } else {
+          fromPos_ = null;
+          fromPosBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Position from_pos = 1;</code>
+       */
+      public protocols.Chess.Position.Builder getFromPosBuilder() {
+        
+        onChanged();
+        return getFromPosFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.Position from_pos = 1;</code>
+       */
+      public protocols.Chess.PositionOrBuilder getFromPosOrBuilder() {
+        if (fromPosBuilder_ != null) {
+          return fromPosBuilder_.getMessageOrBuilder();
+        } else {
+          return fromPos_ == null ?
+              protocols.Chess.Position.getDefaultInstance() : fromPos_;
+        }
+      }
+      /**
+       * <code>.Position from_pos = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          protocols.Chess.Position, protocols.Chess.Position.Builder, protocols.Chess.PositionOrBuilder> 
+          getFromPosFieldBuilder() {
+        if (fromPosBuilder_ == null) {
+          fromPosBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              protocols.Chess.Position, protocols.Chess.Position.Builder, protocols.Chess.PositionOrBuilder>(
+                  getFromPos(),
+                  getParentForChildren(),
+                  isClean());
+          fromPos_ = null;
+        }
+        return fromPosBuilder_;
+      }
+
+      private protocols.Chess.Position endPos_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          protocols.Chess.Position, protocols.Chess.Position.Builder, protocols.Chess.PositionOrBuilder> endPosBuilder_;
+      /**
+       * <code>.Position end_pos = 2;</code>
+       * @return Whether the endPos field is set.
+       */
+      public boolean hasEndPos() {
+        return endPosBuilder_ != null || endPos_ != null;
+      }
+      /**
+       * <code>.Position end_pos = 2;</code>
+       * @return The endPos.
+       */
+      public protocols.Chess.Position getEndPos() {
+        if (endPosBuilder_ == null) {
+          return endPos_ == null ? protocols.Chess.Position.getDefaultInstance() : endPos_;
+        } else {
+          return endPosBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.Position end_pos = 2;</code>
+       */
+      public Builder setEndPos(protocols.Chess.Position value) {
+        if (endPosBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          endPos_ = value;
+          onChanged();
+        } else {
+          endPosBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Position end_pos = 2;</code>
+       */
+      public Builder setEndPos(
+          protocols.Chess.Position.Builder builderForValue) {
+        if (endPosBuilder_ == null) {
+          endPos_ = builderForValue.build();
+          onChanged();
+        } else {
+          endPosBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Position end_pos = 2;</code>
+       */
+      public Builder mergeEndPos(protocols.Chess.Position value) {
+        if (endPosBuilder_ == null) {
+          if (endPos_ != null) {
+            endPos_ =
+              protocols.Chess.Position.newBuilder(endPos_).mergeFrom(value).buildPartial();
+          } else {
+            endPos_ = value;
+          }
+          onChanged();
+        } else {
+          endPosBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Position end_pos = 2;</code>
+       */
+      public Builder clearEndPos() {
+        if (endPosBuilder_ == null) {
+          endPos_ = null;
+          onChanged();
+        } else {
+          endPos_ = null;
+          endPosBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Position end_pos = 2;</code>
+       */
+      public protocols.Chess.Position.Builder getEndPosBuilder() {
+        
+        onChanged();
+        return getEndPosFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.Position end_pos = 2;</code>
+       */
+      public protocols.Chess.PositionOrBuilder getEndPosOrBuilder() {
+        if (endPosBuilder_ != null) {
+          return endPosBuilder_.getMessageOrBuilder();
+        } else {
+          return endPos_ == null ?
+              protocols.Chess.Position.getDefaultInstance() : endPos_;
+        }
+      }
+      /**
+       * <code>.Position end_pos = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          protocols.Chess.Position, protocols.Chess.Position.Builder, protocols.Chess.PositionOrBuilder> 
+          getEndPosFieldBuilder() {
+        if (endPosBuilder_ == null) {
+          endPosBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              protocols.Chess.Position, protocols.Chess.Position.Builder, protocols.Chess.PositionOrBuilder>(
+                  getEndPos(),
+                  getParentForChildren(),
+                  isClean());
+          endPos_ = null;
+        }
+        return endPosBuilder_;
+      }
+
+      private int promotedPiece_ = 0;
+      /**
+       * <code>.PieceType promoted_piece = 3;</code>
+       * @return The enum numeric value on the wire for promotedPiece.
+       */
+      @java.lang.Override public int getPromotedPieceValue() {
+        return promotedPiece_;
+      }
+      /**
+       * <code>.PieceType promoted_piece = 3;</code>
+       * @param value The enum numeric value on the wire for promotedPiece to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPromotedPieceValue(int value) {
+        
+        promotedPiece_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.PieceType promoted_piece = 3;</code>
+       * @return The promotedPiece.
+       */
+      @java.lang.Override
+      public protocols.Chess.PieceType getPromotedPiece() {
+        @SuppressWarnings("deprecation")
+        protocols.Chess.PieceType result = protocols.Chess.PieceType.valueOf(promotedPiece_);
+        return result == null ? protocols.Chess.PieceType.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.PieceType promoted_piece = 3;</code>
+       * @param value The promotedPiece to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPromotedPiece(protocols.Chess.PieceType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        promotedPiece_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.PieceType promoted_piece = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPromotedPiece() {
+        
+        promotedPiece_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:FindBestResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:FindBestResponse)
+    private static final protocols.Chess.FindBestResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new protocols.Chess.FindBestResponse();
+    }
+
+    public static protocols.Chess.FindBestResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<FindBestResponse>
+        PARSER = new com.google.protobuf.AbstractParser<FindBestResponse>() {
+      @java.lang.Override
+      public FindBestResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new FindBestResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<FindBestResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<FindBestResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public protocols.Chess.FindBestResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Position_descriptor;
   private static final 
@@ -6777,6 +8614,16 @@ public final class Chess {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_BestMoveResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_FindBest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_FindBest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_FindBestResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_FindBestResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -6789,22 +8636,29 @@ public final class Chess {
       "\n\013chess.proto\"$\n\010Position\022\013\n\003row\030\001 \001(\005\022\013" +
       "\n\003col\030\002 \001(\005\"\\\n\nProtoPiece\022\030\n\004type\030\001 \001(\0162" +
       "\n.PieceType\022\032\n\005color\030\002 \001(\0162\013.PieceColor\022" +
-      "\013\n\003row\030\003 \001(\005\022\013\n\003col\030\004 \001(\005\"x\n\005Board\022\033\n\006pi" +
-      "eces\030\001 \003(\0132\013.ProtoPiece\022#\n\016player_to_mov" +
-      "e\030\002 \001(\0162\013.PieceColor\022\021\n\tturnCount\030\003 \001(\005\022" +
-      "\032\n\013valid_moves\030\004 \003(\0132\005.Move\"J\n\rGetValidM" +
-      "oves\022\025\n\005board\030\001 \001(\0132\006.Board\022\"\n\rpiece_to_" +
-      "move\030\002 \001(\0132\013.ProtoPiece\".\n\022ValidMovesRes" +
-      "ponse\022\030\n\005moves\030\001 \003(\0132\t.Position\"A\n\013GetBe" +
-      "stMove\022\025\n\005board\030\001 \001(\0132\006.Board\022\033\n\006player\030" +
-      "\002 \001(\0162\013.PieceColor\"K\n\004Move\022\"\n\rpiece_to_m" +
-      "ove\030\001 \001(\0132\013.ProtoPiece\022\037\n\014end_position\030\002" +
-      " \001(\0132\t.Position\",\n\020BestMoveResponse\022\030\n\tb" +
-      "est_move\030\001 \001(\0132\005.Move*\"\n\nPieceColor\022\t\n\005B" +
-      "LACK\020\000\022\t\n\005WHITE\020\001*V\n\tPieceType\022\010\n\004NONE\020\000" +
-      "\022\010\n\004PAWN\020\001\022\n\n\006KNIGHT\020\002\022\n\n\006BISHOP\020\003\022\010\n\004RO" +
-      "OK\020\005\022\t\n\005QUEEN\020\n\022\010\n\004KING\020dB\022\n\tprotocolsB\005" +
-      "Chessb\006proto3"
+      "\013\n\003row\030\003 \001(\005\022\013\n\003col\030\004 \001(\005\"\276\001\n\005Board\022\033\n\006p" +
+      "ieces\030\001 \003(\0132\013.ProtoPiece\022#\n\016player_to_mo" +
+      "ve\030\002 \001(\0162\013.PieceColor\022\021\n\tturnCount\030\003 \001(\005" +
+      "\022\031\n\021black_long_castle\030\005 \001(\010\022\024\n\014black_cas" +
+      "tle\030\006 \001(\010\022\031\n\021white_long_castle\030\007 \001(\010\022\024\n\014" +
+      "white_castle\030\010 \001(\010\"J\n\rGetValidMoves\022\025\n\005b" +
+      "oard\030\001 \001(\0132\006.Board\022\"\n\rpiece_to_move\030\002 \001(" +
+      "\0132\013.ProtoPiece\"R\n\022ValidMovesResponse\022\030\n\005" +
+      "moves\030\001 \003(\0132\t.Position\022\"\n\rrequest_piece\030" +
+      "\002 \001(\0132\013.ProtoPiece\"A\n\013GetBestMove\022\025\n\005boa" +
+      "rd\030\001 \001(\0132\006.Board\022\033\n\006player\030\002 \001(\0162\013.Piece" +
+      "Color\"q\n\004Move\022\"\n\rpiece_to_move\030\001 \001(\0132\013.P" +
+      "rotoPiece\022\037\n\014end_position\030\002 \001(\0132\t.Positi" +
+      "on\022$\n\021secondary_end_pos\030\003 \001(\0132\t.Position" +
+      "\",\n\020BestMoveResponse\022\030\n\tbest_move\030\001 \001(\0132" +
+      "\005.Move\"\036\n\010FindBest\022\022\n\nfen_string\030\001 \001(\t\"o" +
+      "\n\020FindBestResponse\022\033\n\010from_pos\030\001 \001(\0132\t.P" +
+      "osition\022\032\n\007end_pos\030\002 \001(\0132\t.Position\022\"\n\016p" +
+      "romoted_piece\030\003 \001(\0162\n.PieceType*\"\n\nPiece" +
+      "Color\022\t\n\005BLACK\020\000\022\t\n\005WHITE\020\001*V\n\tPieceType" +
+      "\022\010\n\004NONE\020\000\022\010\n\004PAWN\020\001\022\n\n\006KNIGHT\020\002\022\n\n\006BISH" +
+      "OP\020\003\022\010\n\004ROOK\020\005\022\t\n\005QUEEN\020\n\022\010\n\004KING\020dB\022\n\tp" +
+      "rotocolsB\005Chessb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -6827,7 +8681,7 @@ public final class Chess {
     internal_static_Board_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Board_descriptor,
-        new java.lang.String[] { "Pieces", "PlayerToMove", "TurnCount", "ValidMoves", });
+        new java.lang.String[] { "Pieces", "PlayerToMove", "TurnCount", "BlackLongCastle", "BlackCastle", "WhiteLongCastle", "WhiteCastle", });
     internal_static_GetValidMoves_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_GetValidMoves_fieldAccessorTable = new
@@ -6839,7 +8693,7 @@ public final class Chess {
     internal_static_ValidMovesResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ValidMovesResponse_descriptor,
-        new java.lang.String[] { "Moves", });
+        new java.lang.String[] { "Moves", "RequestPiece", });
     internal_static_GetBestMove_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_GetBestMove_fieldAccessorTable = new
@@ -6851,13 +8705,25 @@ public final class Chess {
     internal_static_Move_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Move_descriptor,
-        new java.lang.String[] { "PieceToMove", "EndPosition", });
+        new java.lang.String[] { "PieceToMove", "EndPosition", "SecondaryEndPos", });
     internal_static_BestMoveResponse_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_BestMoveResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_BestMoveResponse_descriptor,
         new java.lang.String[] { "BestMove", });
+    internal_static_FindBest_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_FindBest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_FindBest_descriptor,
+        new java.lang.String[] { "FenString", });
+    internal_static_FindBestResponse_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_FindBestResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_FindBestResponse_descriptor,
+        new java.lang.String[] { "FromPos", "EndPos", "PromotedPiece", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -1,0 +1,29 @@
+
+.accessible_highlight_2 {
+
+    -fx-border-color: red;
+    -fx-border-width: 2;
+    -fx-border-insets: 1;
+}
+.accessible_highlight {
+
+    -fx-background-color: rgb(219, 37, 37, 0.6);
+}
+
+.last_move_highlight {
+    -fx-background-color: rgb(230, 230, 101, 0.6);
+}
+
+.border_right {
+    -fx-border-color: silver;
+    -fx-border-width: 0 2 0 0;
+}
+
+.border_left {
+    -fx-border-color: silver;
+    -fx-border-width: 0 0 0 2;
+}
+.border_top {
+    -fx-border-color: silver;
+    -fx-border-width: 2 0 0 0;
+}

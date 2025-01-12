@@ -11,13 +11,22 @@ import pieces.Piece;
 import protocols.Chess.*;
 
 public class ChessTile extends Label {
-    public static final String ACCESSIBLE_STYLE = "-fx-border-color : red;";
+    public static final String ACCESSIBLE_CLASS = "accessible_highlight";
+    public static final String LAST_MOVE_CLASS = "last_move_highlight";
+    public static final int TILE_SIZE = 100;
+
+    boolean highlighted = false;
 
     Piece piece;
     int row,col;
-    public ChessTile(Color bgColor) {
-        super.setMinSize(50,50);
-        super.setMaxSize(50,50);
+
+    MoveSignal moveHandler;
+    HoverSignal hoverHandler;
+    public ChessTile(Color bgColor, MoveSignal moveHandler, HoverSignal hoverHandler) {
+        this.moveHandler = moveHandler;
+        this.hoverHandler = hoverHandler;
+        super.setMinSize(TILE_SIZE,TILE_SIZE);
+        super.setMaxSize(TILE_SIZE,TILE_SIZE);
         super.setBackground(Background.fill(bgColor));
         setOnDragDetected(this::onDragDetected);
         super.setOnDragDropped(this::onDragDropped);
@@ -25,10 +34,20 @@ public class ChessTile extends Label {
         super.setOnMouseEntered(this::onMouseEntered);
         super.setOnMouseExited(this::onMouseExited);
 
+        super.setOnMouseClicked(this::onMouseClicked);
     }
 
-    public ChessTile(Piece p, Color bgColor) {
-        this(bgColor);
+    private void onMouseClicked(MouseEvent mouseEvent) {
+        if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+            setLastMoveHighlight(!highlighted);
+        } else if (mouseEvent.getButton() == MouseButton.PRIMARY){
+            setLastMoveHighlight(false);
+        }
+        mouseEvent.consume();
+    }
+
+    public ChessTile(Piece p, Color bgColor, MoveSignal moveHandler, HoverSignal hoverHandler) {
+        this(bgColor, moveHandler, hoverHandler);
         setPiece(p);
     }
 
@@ -52,50 +71,53 @@ public class ChessTile extends Label {
         }
         e.consume();
     }
+    public interface MoveSignal {
+        void handleMove(int pieceRow, int pieceColr, ChessTile dest);
+    }
+    public interface HoverSignal {
+        void handleHover(Piece piece, boolean enterSquare);
+    }
+
     void onDragDropped(DragEvent e) {
         Dragboard db = e.getDragboard();
         if (db.hasContent(Piece.CHESS_PIECE)){
             Piece source = deserializePiece(db);
-            source = ChessBoard.getPiece(source.getRow() * 8 + source.getCol());
-            if (source.getColor().equals(ChessBoard.playerTurn) && source.getValidMoves().size() != 0 && source.tileIsValid(this)) {
-                source.moveTo(this);
-            }
+            moveHandler.handleMove(source.getRow(), source.getCol(), this);
         }
         e.consume();
     }
 
     private void onMouseEntered(MouseEvent mouseEvent) {
         if (piece != null) {
-            piece.requestValidMoves();
-            for (Position p : piece.getValidMoves()) {
-                ChessTile t = ChessBoard.getTile(p);
-                t.setAccessibleHighlight(true);
-            }
+            hoverHandler.handleHover(piece, true);
         }
-
         mouseEvent.consume();
     }
     private void onMouseExited(MouseEvent mouseEvent) {
         if (piece != null) {
-            piece.requestValidMoves();
-            for (Position p : piece.getValidMoves()) {
-                ChessTile t = ChessBoard.getTile(p);
-                t.setAccessibleHighlight(false);
-            }
+            hoverHandler.handleHover(piece, false);
         }
-
         mouseEvent.consume();
-
     }
 
-    private void setAccessibleHighlight(boolean b) {
+
+    public void setAccessibleHighlight(boolean b) {
         if (b) {
-            this.setStyle(ACCESSIBLE_STYLE);
+            this.getStyleClass().add(ACCESSIBLE_CLASS);
         } else {
-            this.setStyle(this.getStyle().replace(ACCESSIBLE_STYLE, ""));
+            this.getStyleClass().remove(ACCESSIBLE_CLASS);
         }
     }
 
+    public void setLastMoveHighlight(boolean on) {
+        if (!highlighted && on) {
+            this.getStyleClass().add(LAST_MOVE_CLASS);
+            highlighted = true;
+        } else if (highlighted && !on) {
+            this.getStyleClass().remove(LAST_MOVE_CLASS);
+            highlighted = false;
+        }
+    }
 
     void onDragOver(DragEvent e) {
         if (e.getDragboard().hasContent(Piece.CHESS_PIECE)){
@@ -105,8 +127,7 @@ public class ChessTile extends Label {
     }
 
     private Piece deserializePiece(Dragboard db) {
-        Piece source = (Piece) db.getContent(Piece.CHESS_PIECE);
-        return source;
+        return (Piece) db.getContent(Piece.CHESS_PIECE);
     }
 
     public void clearPiece() {
@@ -116,8 +137,10 @@ public class ChessTile extends Label {
 
     public void setPiece(Piece piece) {
         this.piece = piece;
-        super.setGraphic(piece.getImageView());
         piece.setTile(this);
+        Platform.runLater(() -> {
+            super.setGraphic(piece.getImageView());
+        });
     }
     public ProtoPiece getProtoPiece() {
         ProtoPiece.Builder protoPiece = ProtoPiece.newBuilder()

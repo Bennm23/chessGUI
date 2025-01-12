@@ -1,3 +1,5 @@
+//JFX in /usr/local/lib
+//--module-path /usr/local/lib/javafx-sdk-21.0.5/lib --add-modules javafx.controls/javafx.fxml
 module chess.chessgui {
     requires javafx.controls;
     requires javafx.fxml;
@@ -17,4 +19,6 @@ module chess.chessgui {
     exports chess.chessgui;
     exports protocols;
     exports pieces;
+    exports chess.chessgui.players;
+    opens chess.chessgui.players to javafx.fxml;
 }
